@@ -1,9 +1,7 @@
-const path=require('path')
+const path = require("path");
 
-function createHtml(members){
-
-
-return `<!DOCTYPE html>
+function createHtml(members) {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -65,34 +63,42 @@ return `<!DOCTYPE html>
             <div class="container">
                 <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
          
-            ${members.map((element)=>{
-                const name=Object.keys(element)[0]
-                const id=Object.keys(element)[1]
-                const email=Object.keys(element)[2]
-                const office_num=Object.keys(element)[3]
+            ${members
+              .map((element) => {
+                const name = Object.keys(element)[0];
+                const id = Object.keys(element)[1];
+                const email = Object.keys(element)[2];
+                const office_num = Object.keys(element)[3];
 
                 const removelastbit_ = name.slice(0, name.length - 5);
-                after_ = removelastbit_.replace(/_/g,' ');
-              return `
+                after_ = removelastbit_.replace(/_/g, " ");
+                return `
               <div class="col">
               <div class="card radius-15">
                   <div class="card-body text-center">
                       <div class="p-4 border radius-15">
-                          <img src=${`https://bootdey.com/img/Content/avatar/avatar${Math.floor(Math.random() * 8) + 1}.png`} width="110" height="110" class="rounded-circle shadow" alt="">
+                          <img src=https://bootdey.com/img/Content/avatar/avatar3.png width="110" height="110" class="rounded-circle shadow" alt="">
                           <h5 class="mb-0 mt-5">${element[name]}</h5>
                           <p class="mb-3">${after_}</p>
-                          <div class="list-inline contacts-social mt-3 mb-3">
-                          <span class="badge badge-pill badge-primary">${element[id]}</span>
-                          <span class="badge badge-pill badge-secondary">${element[email]}</span>
-                          <span class="badge badge-pill badge-success">${element[office_num]}</span>
+                          <ul class="list-group">
+                            <li class="list-group-item">${element[id]}</li>
+                          
+                            <li class="list-group-item list-group-item-primary">${element[email]}</li>
+                            <li class="list-group-item list-group-item-secondary">${element[office_num]}</li>
+                 
+                          </ul>
                           </div>
-                         
-                          </div>
+                       
                       </div>
+                   
+
+
                   </div>
               </div>
-          </div>`
-            }).join('')}
+
+              `;
+              })
+              .join("")}
                 
              
                 </div>
@@ -116,8 +122,7 @@ return `<!DOCTYPE html>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
 </body>
-</html>`
-
+</html>`;
 }
 
 module.exports = createHtml;
