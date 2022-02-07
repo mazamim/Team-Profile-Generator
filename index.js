@@ -3,17 +3,53 @@ const fs = require("fs");
 const path=require('path')
 const displayStartUP = require("./util/startup.js");
 const createHtml=require('./util/genrateHtml.js')
+const {emptyInput,emailVerification,phoneVerification}=require('./util/validation.js')
+
 
 displayStartUP();
 
-const emptyInput = (name) => {
-  if (name !== "") {
-    return true;
-  } else {
-    console.log(`Input cannot be blank....`);
-    return false;
-  }
-};
+async function callMembers(memberType) {
+  const answer = await inquirer.prompt([
+    {
+      type: "input",
+      name: `${memberType}_name`,
+      message: `What is the ${memberType}’s name?`,
+      validate: emptyInput,
+    },
+    {
+      type: "input",
+      name: `${memberType}_id`,
+      message: `What is the ${memberType}’s id?`,
+      validate: emptyInput
+    },
+    {
+      type: "input",
+      name: `${memberType}_email`,
+      message: `What is the ${memberType}’s email?`,
+      validate: emailVerification
+    },
+    {
+      type: "input",
+      name: `${memberType}_office_num`,
+      message: `What is the ${memberType}'s office number?`,
+      validate: phoneVerification
+    },
+    {
+      type: "rawlist",
+      name: "members",
+      message: "Which type of team member would you like to add?",
+      choices: [
+        "Engineer",
+        "Intern",
+        new inquirer.Separator(),
+        "I dont want to add any team members",
+      ],
+    },
+  ]);
+
+  return answer;
+}
+
 
 async function htmlCreater() {
   var members = [];
@@ -32,7 +68,7 @@ async function htmlCreater() {
       // const main = members.shift();
       // main.members = members;
       isRequired = false;
-      console.log(members)
+    
       const content = createHtml(members);
       writeToFile('index.html', content)
       require('child_process').exec(`start "" ${path.join(__dirname,"index.html")}`);
@@ -45,47 +81,7 @@ async function htmlCreater() {
   }
 }
 
-async function callMembers(memberType) {
-  const answer = await inquirer.prompt([
-    {
-      type: "input",
-      name: `${memberType}_name`,
-      message: `What is the ${memberType}’s name?`,
-      validate: emptyInput,
-    },
-    {
-      type: "input",
-      name: `${memberType}_id`,
-      message: `What is the ${memberType}’s id?`,
-      validate: emptyInput,
-    },
-    {
-      type: "input",
-      name: `${memberType}_email`,
-      message: `What is the ${memberType}’s email?`,
-      validate: emptyInput,
-    },
-    {
-      type: "input",
-      name: `${memberType}_office_num`,
-      message: `What is the ${memberType}'s office number?`,
-      validate: emptyInput,
-    },
-    {
-      type: "rawlist",
-      name: "members",
-      message: "Which type of team member would you like to add?",
-      choices: [
-        "Engineer",
-        "Intern",
-        new inquirer.Separator(),
-        "I dont want to add any team members",
-      ],
-    },
-  ]);
 
-  return answer;
-}
 
 function writeToFile(fileName, data) {
   fs.writeFile(fileName, data, (error) => {
@@ -94,3 +90,5 @@ function writeToFile(fileName, data) {
 }
 
 htmlCreater();
+
+module.exports={callMembers}

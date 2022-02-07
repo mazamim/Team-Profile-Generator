@@ -86,7 +86,7 @@ return `<!DOCTYPE html>
                           <span class="badge badge-pill badge-secondary">${element[email]}</span>
                           <span class="badge badge-pill badge-success">${element[office_num]}</span>
                           </div>
-                          <div class="d-grid"> <a href="#" class="btn btn-outline-primary radius-15">Contact Me</a>
+                         
                           </div>
                       </div>
                   </div>
