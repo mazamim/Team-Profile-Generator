@@ -6,7 +6,54 @@ const createHtml=require('./util/genrateHtml.js')
 const {emptyInput,emailVerification,phoneVerification}=require('./util/validation.js')
 
 
+function returnQuestionArray(memberType){
+
+return ( questions=
+[
+  {
+    type: "input",
+    name: `${memberType}_name`,
+    message: `What is the ${memberType}’s name?`,
+    validate: emptyInput,
+  },
+  {
+    type: "input",
+    name: `${memberType}_id`,
+    message: `What is the ${memberType}’s id?`,
+    validate: emptyInput
+  },
+  {
+    type: "input",
+    name: `${memberType}_email`,
+    message: `What is the ${memberType}’s email?`,
+    validate: emailVerification
+  },
+
+  {
+    type: "rawlist",
+    name: "members",
+    message: "Which type of team member would you like to add?",
+    choices: [
+      "Engineer",
+      "Intern",
+      new inquirer.Separator(),
+      "I dont want to add any team members",
+    ]
+  }
+])
+
+
+}
+
+
+
+
+
 displayStartUP();
+
+Array.prototype.insert = function ( index, item ) {
+  this.splice( index, 0, item );
+}
 
 async function callMembers(memberType) {
 
@@ -16,43 +63,45 @@ async function callMembers(memberType) {
       return error
   }
 
-  const answer = await inquirer.prompt([
-    {
-      type: "input",
-      name: `${memberType}_name`,
-      message: `What is the ${memberType}’s name?`,
-      validate: emptyInput,
-    },
-    {
-      type: "input",
-      name: `${memberType}_id`,
-      message: `What is the ${memberType}’s id?`,
-      validate: emptyInput
-    },
-    {
-      type: "input",
-      name: `${memberType}_email`,
-      message: `What is the ${memberType}’s email?`,
-      validate: emailVerification
-    },
+  const additionalTeamMangerQuestion=
     {
       type: "input",
       name: `${memberType}_office_num`,
       message: `What is the ${memberType}'s office number?`,
       validate: phoneVerification
-    },
+    }
+
+    const additionalEngineerMangerQuestion=
     {
-      type: "rawlist",
-      name: "members",
-      message: "Which type of team member would you like to add?",
-      choices: [
-        "Engineer",
-        "Intern",
-        new inquirer.Separator(),
-        "I dont want to add any team members",
-      ],
-    },
-  ]);
+      type: "input",
+      name: `${memberType}_github`,
+      message: `What is the ${memberType}'s github accountr?`,
+      validate: emptyInput
+    }
+
+    const additionalinternQuestion=
+    {
+      type: "input",
+      name: `${memberType}_school`,
+      message: `What is the ${memberType}'s school name?`,
+      validate: emptyInput
+    }
+  
+
+  const clonedQuestion = returnQuestionArray(memberType)
+  if (memberType==='Engineer'){
+     clonedQuestion.insert(3, additionalEngineerMangerQuestion);
+  }
+
+  if (memberType==='Intern'){
+    clonedQuestion.insert(3, additionalinternQuestion);
+ }
+
+ if (memberType==='Team_Manager'){
+  clonedQuestion.insert(3, additionalTeamMangerQuestion);
+}
+ 
+  const answer = await inquirer.prompt(clonedQuestion);
 
   return answer;
 }
