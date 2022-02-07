@@ -14,7 +14,27 @@ const {
           expect(results).toBe([]);
        
         })
+      
+      })
+
+      it("should return error message as 'Member type cannot be blank..' if the parameter is empty", () => {
   
+        callMembers("")
+        .then((results)=>{ })
+        .catch((error)=>{ 
+            expect(error).toBe('Member type cannot be blank..')
+        })
+      
+      })
+
+
+      it("should return error message as 'Member type cannot be blank..' if the parameter is empty", () => {
+  
+        callMembers()
+        .then((results)=>{ })
+        .catch((error)=>{ 
+            expect(error).toBe('Member type cannot be blank..')
+        })
       
       })
   

@@ -9,6 +9,13 @@ const {emptyInput,emailVerification,phoneVerification}=require('./util/validatio
 displayStartUP();
 
 async function callMembers(memberType) {
+
+  if (memberType === ''|| memberType===null){
+      console.log('Member type cannot be blank..')
+      error= new Error('Member type cannot be blank..')
+      return error
+  }
+
   const answer = await inquirer.prompt([
     {
       type: "input",
@@ -91,4 +98,4 @@ function writeToFile(fileName, data) {
 
 htmlCreater();
 
-module.exports={callMembers}
+module.exports={callMembers,htmlCreater}
